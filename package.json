@@ -1,0 +1,19 @@
+{
+  "name": "maeergister",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/vigovlugt/maeergister.git",
+  "author": "Vigo Vlugt <vigovlugt@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/next": "^8.0.6",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "next": "^9.0.5",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.3"
+  }
+}

@@ -15,5 +15,8 @@
   },
   "devDependencies": {
     "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "build": "next build"
   }
 }

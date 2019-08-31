@@ -11,7 +11,11 @@ const sideBarItems = [
   { icon: faCalendarAlt, name: "Rooster", href: "schedule" }
 ];
 
-const Layout: FunctionComponent = ({ children }) => {
+interface IProps {
+  container?: boolean;
+}
+
+const Layout: FunctionComponent<IProps> = ({ children, container }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
@@ -44,24 +48,35 @@ const Layout: FunctionComponent = ({ children }) => {
           <div style={{ width: "50px" }}></div>
         </div>
       </nav>
+      <div className="main">
+        <div
+          className={"sidebar bg-light" + (!showSidebar ? " collapsed" : "")}
+        >
+          <div className="sidebar-content">
+            {sideBarItems.map((item, i) => (
+              <Link href={item.href} key={i}>
+                <div className="sidebar-item">
+                  <div className="sidebar-icon-holder">
+                    <FontAwesomeIcon
+                      icon={item.icon}
+                      size="3x"
+                    ></FontAwesomeIcon>
+                  </div>
 
-      <div className={"sidebar bg-light" + (!showSidebar ? " collapsed" : "")}>
-        <div className="sidebar-content">
-          {sideBarItems.map((item, i) => (
-            <Link href={item.href} key={i}>
-              <div className="sidebar-item">
-                <div className="sidebar-icon-holder">
-                  <FontAwesomeIcon icon={item.icon} size="3x"></FontAwesomeIcon>
+                  <a className="sidebar-item-link">{item.name}</a>
                 </div>
-
-                <a className="sidebar-item-link">{item.name}</a>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
+        <div className={container ? "container" : ""}>{children}</div>
       </div>
     </div>
   );
+};
+
+Layout.defaultProps = {
+  container: true
 };
 
 export default Layout;

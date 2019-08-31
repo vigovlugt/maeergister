@@ -10,13 +10,22 @@
     "@fortawesome/free-regular-svg-icons": "^5.10.2",
     "@fortawesome/free-solid-svg-icons": "^5.10.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@types/cookie": "^0.3.3",
+    "@types/js-cookie": "^2.2.2",
+    "@types/jsonwebtoken": "^8.3.3",
+    "@types/mysql2": "types/mysql2",
     "@types/next": "^8.0.6",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@zeit/next-css": "^1.0.1",
+    "cookie": "^0.4.0",
+    "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^1.7.0",
     "next": "^9.0.5",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "webpack": "^4.39.3"
   },
   "devDependencies": {
     "typescript": "^3.5.3"

@@ -4,13 +4,16 @@ import jwt from "jsonwebtoken";
 import AccountType from "../models/AccountType";
 import IAccessToken from "../models/AccessToken";
 
+const isServer = typeof window === "undefined";
+
 export default function getAccountType(ctx: NextPageContext): AccountType {
+  if (!isServer) return AccountType.none;
+
   const cookies = parseCookies(ctx.req);
-  console.log(cookies);
   if (cookies.accessToken) {
     try {
       const token = <IAccessToken>jwt.verify(cookies.accessToken, "admin");
-      return token.accountType;
+      return token.accountType || AccountType.student;
     } catch (error) {
       ctx.res.writeHead(302, { Location: "/login" });
       ctx.res.end();

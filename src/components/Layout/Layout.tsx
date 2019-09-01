@@ -1,10 +1,11 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState, useContext } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./Layout.css";
+import AppContext from "../Context/AppContext";
 
 const sideBarItems = [
   { icon: faUsers, name: "Klas", href: "class" },
@@ -19,6 +20,8 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
+  const { accountType } = useContext(AppContext);
+
   return (
     <div>
       <Head>
@@ -32,6 +35,7 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
       </Head>
+      <h1>{accountType}</h1>
       <nav
         className="navbar navbar-light"
         style={{ backgroundColor: "#00dfc8" }}

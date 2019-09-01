@@ -1,12 +1,8 @@
 import { NextPage } from "next";
 import Layout from "../src/components/Layout/Layout";
-import getAccountType from "../src/server/auth";
 
-const Page: NextPage = () => <Layout>index</Layout>;
+interface IProps {}
 
-Page.getInitialProps = async ctx => {
-  const accountType = getAccountType(ctx);
-  return {};
-};
+const Page: NextPage<IProps, {}> = () => <Layout>index</Layout>;
 
 export default Page;

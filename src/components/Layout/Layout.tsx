@@ -6,16 +6,17 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./Layout.css";
 import AppContext from "../Context/AppContext";
 import AccountType from "../../models/AccountType";
+import { useRouter } from "next/router";
 
 const sideBarItems = {
   [AccountType.none]: [],
   [AccountType.student]: [
-    { icon: faUsers, name: "Klas", href: "class" },
-    { icon: faCalendarAlt, name: "Rooster", href: "schedule" }
+    { icon: faUsers, name: "Klas", href: "/class" },
+    { icon: faCalendarAlt, name: "Rooster", href: "/schedule" }
   ],
   [AccountType.teacher]: [
-    { icon: faUsers, name: "Klassen", href: "class" },
-    { icon: faCalendarAlt, name: "Rooster", href: "schedule" }
+    { icon: faUsers, name: "Klassen", href: "/class" },
+    { icon: faCalendarAlt, name: "Rooster", href: "/schedule" }
   ]
 };
 
@@ -24,6 +25,7 @@ interface IProps {
 }
 
 const Layout: FunctionComponent<IProps> = ({ children, container }) => {
+  const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
@@ -51,7 +53,12 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
           <div className="sidebar-content">
             {sideBarItems[accountType.toString()].map((item, i) => (
               <Link href={item.href} key={i}>
-                <div className="sidebar-item">
+                <div
+                  className={
+                    "sidebar-item " +
+                    (router.pathname === item.href ? "sidebar-item-active" : "")
+                  }
+                >
                   <div className="sidebar-icon-holder">
                     <FontAwesomeIcon
                       icon={item.icon}

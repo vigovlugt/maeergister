@@ -26,6 +26,10 @@
   cursor: pointer;
 }
 
+.sidebar-item-active {
+  background-color: #c9c9c9;
+}
+
 .sidebar-item a {
   font-size: 25px;
   color: black;

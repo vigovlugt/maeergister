@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import getConnection from "../../src/server/database";
+import getConnection from "../../lib/database";
 import jwt from "jsonwebtoken";
-import IAccessToken from "../../src/models/AccessToken";
+import IAccessToken from "../../models/AccessToken";
 import { RowDataPacket } from "mysql";
 import cookie from "cookie";
 

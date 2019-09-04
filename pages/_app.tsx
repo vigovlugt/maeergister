@@ -1,9 +1,9 @@
 import React from "react";
 import App, { AppContext } from "next/app";
-import * as CustomAppContext from "../src/components/Context/AppContext";
-import getAccountType from "../src/server/auth";
-import AccountType from "../src/models/AccountType";
-import Layout from "../src/components/Layout/Layout";
+import * as CustomAppContext from "../components/Context/AppContext";
+import getAccountType from "../lib/auth";
+import AccountType from "../models/AccountType";
+import Layout from "../components/Layout/Layout";
 import { withRouter } from "next/router";
 import Head from "next/head";
 

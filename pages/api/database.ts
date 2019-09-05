@@ -1,5 +1,5 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import getConnection from "../../src/server/database";
+import getConnection from "../../lib/database";
 import { RowDataPacket } from "mysql2/promise";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

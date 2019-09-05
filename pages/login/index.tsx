@@ -29,7 +29,7 @@ const Page: NextPage = () => {
       <form style={{ width: "300px" }} onSubmit={e => e.preventDefault()}>
         <h1 className="mb-3">Login</h1>
         <input
-          placeholder="Login"
+          placeholder="Gebruikersnaam"
           className="form-control"
           onChange={e => setExternalId(e.target.value)}
           id="external-id"
@@ -45,13 +45,7 @@ const Page: NextPage = () => {
           className="btn btn-lg btn-primary btn-block mt-3"
           onClick={login}
         >
-          Login als student
-        </button>
-        <button
-          className="btn btn-lg btn-outline-primary btn-block mt-3"
-          onClick={login}
-        >
-          Login als leraar
+          Login
         </button>
       </form>
     </div>

@@ -10,13 +10,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (externalId && password) {
     const connection = await getConnection();
-    const results = await connection.query<RowDataPacket[]>(
+    const [results,tableInfo] = await connection.query<RowDataPacket[]>(
       `select *, 'AccountType' as 'STUDENT' from Students where ExternalId = ? and Password = ?`, //--UNION
       //--select *, 'AccountType' as 'STUDENT' from Teachers where ExternalId = ? and Password = ?
       [externalId, password]
     );
-    if (results[0].length > 0) {
-      const account = results[0][0];
+    if (results.length > 0) {
+      const account = results[0];
       const accessToken: IAccessToken = {
         accountType: account.AccountType,
         id: account.Id,

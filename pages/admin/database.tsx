@@ -23,6 +23,9 @@ export default () => {
                 JSON.stringify(result,null,2)
             }
             </p>
+            <p>SELECT DATA_TYPE,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE table_name = 'Students'</p>
         </div>
+
     )
 }

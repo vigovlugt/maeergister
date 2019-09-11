@@ -19,7 +19,7 @@ interface IState {
 
 class CustomApp extends App<IProps, {}, IState> {
   state = {
-    accountType: AccountType.none
+    accountType: AccountType.None
   };
 
   constructor(props) {
@@ -44,7 +44,7 @@ class CustomApp extends App<IProps, {}, IState> {
       router
     });
     if (ctx.req) {
-      let accountType = AccountType.none;
+      let accountType = AccountType.None;
       if (!ctx.pathname.startsWith("/login")) {
         accountType = await getAccountType(ctx);
       }
@@ -56,7 +56,7 @@ class CustomApp extends App<IProps, {}, IState> {
 
   render() {
     const { Component, pageProps, accountType } = this.props;
-    const useLayout = !this.props.router.pathname.startsWith("/login");
+    const useLayout = !["/login","/admin/database"].some(path=>this.props.router.pathname.startsWith(path));
     return (
       <>
         <Head>

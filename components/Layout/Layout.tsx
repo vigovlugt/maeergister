@@ -1,22 +1,29 @@
 import { FunctionComponent, useState, useContext } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faCalendarAlt,faClipboardList, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./Layout.css";
 import AppContext from "../Context/AppContext";
 import AccountType from "../../models/AccountType";
 import { useRouter } from "next/router";
 
-const sideBarItems = {
-  [AccountType.none]: [],
-  [AccountType.student]: [
-    { icon: faUsers, name: "Klas", href: "/class" },
-    { icon: faCalendarAlt, name: "Rooster", href: "/schedule" }
+interface ISideBarItem {icon:IconDefinition,name:string,href:string}
+
+const classItem = { icon: faUsers, name: "Klas", href: "/class" };
+const absenceItem = { icon: faCalendarAlt, name: "Absentie", href: "/absence" };
+const gradeItem = { icon: faClipboardList, name:"Cijfers",href:"/grades"};
+
+const sideBarItems:{[accountType:string]:ISideBarItem[]}= {
+    [AccountType.None]:[],
+  [AccountType.Admin]: [
+    classItem,absenceItem,gradeItem
   ],
-  [AccountType.teacher]: [
-    { icon: faUsers, name: "Klassen", href: "/class" },
-    { icon: faCalendarAlt, name: "Rooster", href: "/schedule" }
+  [AccountType.Management]: [
+    classItem,absenceItem,gradeItem
+  ],
+  [AccountType.AbsentManagement]:[
+      absenceItem
   ]
 };
 
@@ -51,7 +58,7 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
           className={"sidebar bg-light" + (!showSidebar ? " collapsed" : "")}
         >
           <div className="sidebar-content">
-            {sideBarItems[accountType.toString()].map((item, i) => (
+            {sideBarItems[accountType].map((item, i) => (
               <Link href={item.href} key={i}>
                 <div
                   className={

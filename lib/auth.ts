@@ -7,13 +7,13 @@ import IAccessToken from "../models/AccessToken";
 const isServer = typeof window === "undefined";
 
 export default function getAccountType(ctx: NextPageContext): AccountType {
-  if (!isServer) return AccountType.none;
-
+  if (!isServer) return AccountType.None;
+    return AccountType.None
   const cookies = parseCookies(ctx.req);
   if (cookies.accessToken) {
     try {
       const token = <IAccessToken>jwt.verify(cookies.accessToken, "admin");
-      return token.accountType || AccountType.student;
+      return token.accountType;
     } catch (error) {
       ctx.res.writeHead(302, { Location: "/login" });
       ctx.res.end();
@@ -22,5 +22,5 @@ export default function getAccountType(ctx: NextPageContext): AccountType {
     ctx.res.writeHead(302, { Location: "/login" });
     ctx.res.end();
   }
-  return AccountType.none;
+  return AccountType.None;
 }

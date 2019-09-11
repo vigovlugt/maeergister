@@ -1,7 +1,8 @@
 enum AccountType {
-  none = "NONE",
-  student = "STUDENT",
-  teacher = "TEACHER"
+  None = "NONE",
+  Admin = "ADMIN",
+  Management = "MANAGEMENT",
+  AbsentManagement = "ABSENT_MANAGEMENT"
 }
 
 export default AccountType;

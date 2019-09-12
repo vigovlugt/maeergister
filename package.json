@@ -16,6 +16,7 @@
     "@types/mysql2": "types/mysql2",
     "@types/next": "^8.0.6",
     "@types/react": "^16.9.2",
+    "@types/react-bootstrap": "^0.32.19",
     "@types/react-dom": "^16.9.0",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
@@ -31,6 +32,7 @@
     "node-sass": "^4.12.0",
     "popper.js": "^1.15.0",
     "react": "^16.9.0",
+    "react-bootstrap": "^1.0.0-beta.12",
     "react-cookie": "^4.0.1",
     "react-dom": "^16.9.0",
     "webpack": "^4.39.3"

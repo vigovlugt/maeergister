@@ -56,7 +56,9 @@ class CustomApp extends App<IProps, {}, IState> {
 
   render() {
     const { Component, pageProps, accountType } = this.props;
-    const useLayout = !["/login","/admin/database"].some(path=>this.props.router.pathname.startsWith(path));
+    const useLayout = !["/login", "/admin/database"].some(path =>
+      this.props.router.pathname.startsWith(path)
+    );
     return (
       <>
         <Head>
@@ -65,12 +67,6 @@ class CustomApp extends App<IProps, {}, IState> {
             name="viewport"
             content="initial-scale=1.0, width=device-width"
           />
-          <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          />
-          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         </Head>
         <CustomAppContext.default.Provider value={{ accountType }}>
           {useLayout ? (

@@ -8,7 +8,8 @@ export default async function getConnection() {
     host: "maeergister.cobuwfghkcfg.eu-central-1.rds.amazonaws.com",
     user: "admin",
     password: "trwwUWVI3wJEu9ZlRcAL",
-    database: "Maeergister"
+    database: "Maeergister",
+    multipleStatements: true
   });
   return connection;
 }

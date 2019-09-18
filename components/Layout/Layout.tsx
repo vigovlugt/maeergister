@@ -5,7 +5,8 @@ import {
   faUsers,
   faCalendarAlt,
   faClipboardList,
-  IconDefinition
+  IconDefinition,
+  faUserGraduate
 } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./Layout.css";
@@ -53,7 +54,21 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
               Maeergister
             </a>
           </Link>
-          <div style={{ width: "50px" }}></div>
+          <div
+            className="d-flex align-items-center justify-content-center"
+            style={{
+              height: "40px",
+              width: "40px",
+              borderRadius: "50%",
+              backgroundColor: "#707070"
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faUserGraduate}
+              size="2x"
+              className="text-light"
+            ></FontAwesomeIcon>
+          </div>
         </div>
       </nav>
       <div className="main">

@@ -1,9 +1,8 @@
 import { NextPage } from "next";
-import Layout from "../../components/Layout/Layout";
 import fetch from "node-fetch";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
@@ -27,8 +26,18 @@ const ClassPage: NextPage<IProps> = props => {
       body: JSON.stringify({ name: className })
     });
     const json = await res.json();
-    setClasses(prevClasses => [...prevClasses, ...json.data]);
+    setClasses(prevClasses => [...prevClasses, json]);
     handleClose();
+  };
+
+  const deleteClass = async (id: number) => {
+    const res = await fetch("/api/class", {
+      method: "DELETE",
+      body: JSON.stringify({ id })
+    });
+    const json = await res.json();
+    setClasses(prevClasses => prevClasses.filter(c => c.Id != id));
+    return false;
   };
 
   return (
@@ -37,14 +46,25 @@ const ClassPage: NextPage<IProps> = props => {
       <ul className="list-group">
         {classes.map(c => (
           <Link href={`/class/${c.Id}`} key={c.Id}>
-            <a
-              style={{ alignItems: "center" }}
-              className="list-group-item list-group-item-action d-flex justify-content-between text-dark"
-            >
-              <h3>{c.Name}</h3>
-              <span className="badge badge-primary badge-pill">
-                {c.Students}
-              </span>
+            <a className="list-group-item list-group-item-action d-flex justify-content-between text-dark  align-items-center">
+              <div className="d-flex flex-row align-items-center">
+                <h3 className="mb-1">{c.Name}</h3>
+                <span className="badge badge-primary badge-pill ml-2">
+                  {c.Students}
+                </span>
+              </div>
+              <div
+                onClick={e => {
+                  e.preventDefault();
+                  deleteClass(c.Id);
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  className="text-danger"
+                  size="2x"
+                ></FontAwesomeIcon>
+              </div>
             </a>
           </Link>
         ))}

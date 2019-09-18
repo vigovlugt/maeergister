@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import getConnection, { getTable } from "../../lib/database";
-import { RowDataPacket, OkPacket } from "mysql";
+import {
+  getClasses,
+  createClass,
+  deleteClass
+} from "../../services/classService";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
@@ -10,32 +13,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     case "POST":
       handlePost(req, res);
       break;
+    case "DELETE":
+      handleDelete(req, res);
+      break;
   }
 };
 
 const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
-  const con = await getConnection();
-  const [results] = await con.query<RowDataPacket[]>(
-    "select *, RAND() as 'Students' from Classes"
-  );
+  const classes = await getClasses();
   res.status(200).json({
-    data: results
+    data: classes
   });
 };
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
-  const con = await getConnection();
   const { name } = JSON.parse(req.body);
-  const classObj = { Name: name };
-  const [insertResult] = await con.query<OkPacket>(
-    "insert into Classes set ?",
-    classObj
-  );
-  const [results] = await con.query<RowDataPacket[]>(
-    "select *, 0 as 'Students' from Classes where Id = ?",
-    [insertResult.insertId]
-  );
-  res.status(200).json({
-    data: results
-  });
+  const classObj = await createClass(name);
+
+  res.status(200).json(classObj);
+};
+
+const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const { id } = JSON.parse(req.body);
+    await deleteClass(id);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(200).json({ error });
+  }
 };

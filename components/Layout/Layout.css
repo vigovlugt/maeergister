@@ -5,12 +5,13 @@
 }
 
 .sidebar {
-  width: 200px;
+  width: 220px;
   padding: 10px;
   padding-left: 0px;
   overflow-x: hidden;
   height: calc(100vh - 56px);
   transition: width 0.3s;
+  font-size:12px;
 }
 
 .sidebar.collapsed {
@@ -18,7 +19,7 @@
 }
 
 .sidebar-content {
-  width: 200px;
+  width: 220px;
 }
 
 .sidebar-item {
@@ -29,7 +30,8 @@
 }
 
 .sidebar-item-active {
-  background-color: #c9c9c9;
+  background-color: #454d55;
+  color:white;
 }
 
 .sidebar-item a {

@@ -11,7 +11,7 @@
   overflow-x: hidden;
   height: calc(100vh - 56px);
   transition: width 0.3s;
-  font-size:12px;
+  font-size: 12px;
 }
 
 .sidebar.collapsed {
@@ -31,7 +31,7 @@
 
 .sidebar-item-active {
   background-color: #454d55;
-  color:white;
+  color: white;
 }
 
 .sidebar-item a {

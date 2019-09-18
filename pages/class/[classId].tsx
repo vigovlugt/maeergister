@@ -14,7 +14,7 @@ const ClassPage: NextPage<IProps> = props => {
   return (
     <div className="my-3">
       <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
+        <ol className="breadcrumb bg-white">
           <li className="breadcrumb-item">
             <Link href="/class">
               <a>Klassen</a>

@@ -42,7 +42,7 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
   const { accountType } = useContext(AppContext);
 
   return (
-    <div className="bg-light">
+    <div style={{backgroundColor:"rgba(0,0,0,0.1)"}}>
       <nav className="navbar navbar-light bg-primary">
         <div className="nav-content">
           <button className="btn btn-light" onClick={toggleSidebar}>

@@ -29,6 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^1.7.0",
     "next": "^9.0.5",
+    "next-progressbar": "^1.0.0",
     "next-sass": "^1.0.3",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.12.0",

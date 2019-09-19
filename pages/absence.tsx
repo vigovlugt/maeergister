@@ -25,7 +25,7 @@ const AbsencePage: NextPage<IProps> = ({ absences }) => {
         </Card>
       </div>
 
-      <Table striped variant="dark">
+      <Table striped variant="light">
         <thead>
           <tr>
             <th>Naam leerling</th>

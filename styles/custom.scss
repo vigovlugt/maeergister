@@ -3,3 +3,7 @@ $theme-colors: (
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+.card {
+  border: 0px;
+}

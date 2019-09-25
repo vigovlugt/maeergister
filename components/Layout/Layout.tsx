@@ -60,7 +60,6 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
               height: "40px",
               width: "40px",
               borderRadius: "50%",
-              backgroundColor: "#707070"
             }}
           >
             <FontAwesomeIcon

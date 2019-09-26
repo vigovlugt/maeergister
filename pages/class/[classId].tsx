@@ -77,11 +77,13 @@ const ClassPage: NextPage<IProps> = props => {
           )}
         </tbody>
       </table>
-      <StudentModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        studentId={selectedStudent}
-      ></StudentModal>
+      {showModal && (
+        <StudentModal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          studentId={selectedStudent}
+        ></StudentModal>
+      )}
     </div>
   );
 };

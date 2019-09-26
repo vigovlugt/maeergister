@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import Layout from "../components/Layout/Layout";
 import { Bar } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBirthdayCake } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +6,10 @@ import { useEffect, useState } from "react";
 
 import * as firebase from "firebase/app";
 import "firebase/firestore";
-// import Calendar from "react-calendar"
+
+import { DayPickerRangeController } from "react-dates";
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
 
 interface IProps {}
 
@@ -46,18 +48,21 @@ const Page: NextPage<IProps, {}> = () => {
       measurementId: "G-EPS1BZQK93"
     };
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
 
     const db = firebase.firestore();
 
-    const noteRef = db.collection("Notes").doc("Node1");
+    const noteRef = db.collection("Notes").doc("Note1");
     setNoteRef(noteRef);
 
     noteRef.onSnapshot(snapshot => {
-      const noteDbValue = snapshot.data().value;
-      setNote(noteDbValue);
+      const noteDbValue = snapshot.data();
+      const value = noteDbValue.value;
+      setNote(value);
     });
-  });
+  }, []);
 
   const setNoteValueDb = n => {
     setNote(n);
@@ -114,18 +119,75 @@ const Page: NextPage<IProps, {}> = () => {
             >
               <textarea
                 className="form-control"
+                value={note}
                 onChange={e => setNoteValueDb(e.target.value)}
+                style={{
+                  minHeight: "400px"
+                }}
               ></textarea>
+              <style jsx>{`
+                textarea {
+                  border: 0px;
+                  line-height: 31px;
+                  background-image: -webkit-linear-gradient(
+                      left,
+                      white 10px,
+                      transparent 10px
+                    ),
+                    -webkit-linear-gradient(right, white 10px, transparent 10px),
+                    -webkit-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white
+                          31px);
+                  background-image: -moz-linear-gradient(
+                      left,
+                      white 10px,
+                      transparent 10px
+                    ),
+                    -moz-linear-gradient(right, white 10px, transparent 10px),
+                    -moz-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white
+                          31px);
+                  background-image: -ms-linear-gradient(
+                      left,
+                      white 10px,
+                      transparent 10px
+                    ),
+                    -ms-linear-gradient(right, white 10px, transparent 10px),
+                    -ms-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white
+                          31px);
+                  background-image: -o-linear-gradient(
+                      left,
+                      white 10px,
+                      transparent 10px
+                    ),
+                    -o-linear-gradient(right, white 10px, transparent 10px),
+                    -o-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white
+                          31px);
+                  background-image: linear-gradient(
+                      left,
+                      white 10px,
+                      transparent 10px
+                    ),
+                    linear-gradient(right, white 10px, transparent 10px),
+                    linear-gradient(
+                      white 30px,
+                      #ccc 30px,
+                      #ccc 31px,
+                      white 31px
+                    );
+                  background-size: 100% 100%, 100% 100%, 100% 31px;
+                }
+              `}</style>
             </div>
           </div>
         </div>
-        <div className="col-sm">
+        <div className="col-xl-4">
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Agenda</h5>
             </div>
 
-            <div className="card-body">{/* <Calendar/> */}</div>
+            <div className="card-body">
+              <DayPickerRangeController />
+            </div>
           </div>
         </div>
       </div>

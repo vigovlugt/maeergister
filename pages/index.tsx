@@ -3,6 +3,8 @@ import Layout from "../components/Layout/Layout";
 import { Bar } from "react-chartjs-2"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBirthdayCake } from "@fortawesome/free-solid-svg-icons";
+import {useEffect} from "react";
+// import Calendar from "react-calendar"
 
 interface IProps { }
 
@@ -17,7 +19,9 @@ const data = {
   ]
 };
 
-const Page: NextPage<IProps, {}> = () => <div>
+const Page: NextPage<IProps, {}> = () => {
+
+    return <div>
     <div className="row mt-3">
         <div className="col-sm">
             <div className="card">
@@ -53,8 +57,8 @@ const Page: NextPage<IProps, {}> = () => <div>
                     <h5 className="card-title text-center">Notities</h5>
                 </div>
 
-                <div className="card-body bg-white">
-                    hai
+                <div className="card-body bg-white" style={{borderBottom:"1px solid lightgray"}}>
+                     <textarea className="form-control" aria-label="With textarea"></textarea>
                 </div>
             </div>
         </div>
@@ -63,9 +67,13 @@ const Page: NextPage<IProps, {}> = () => <div>
                 <div className="card-body">
                     <h5 className="card-title text-center">Agenda</h5>
                 </div>
+
+                <div className="card-body">
+                    {/* <Calendar/> */}
+                </div>
             </div>
         </div>
     </div>
-</div>;
+</div>};
 
 export default Page;

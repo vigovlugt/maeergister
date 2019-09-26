@@ -47,7 +47,6 @@ const Page: NextPage<IProps, {}> = () => {
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
 
     const db = firebase.firestore();
 

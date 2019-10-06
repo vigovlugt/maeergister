@@ -48,7 +48,7 @@ const AbsencePage: NextPage<IProps> = ({ absences: absencesProp }) => {
           {absences.map(a => (
             <tr
               className={`bg-${
-                { OG: "danger", ZIEK: "warning", GO: "succes" }[a.Type]
+                { OG: "danger", ZIEK: "warning", GO: "success" }[a.Type]
               } text-light`}
               key={a.Id}
             >

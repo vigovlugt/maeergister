@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, Fragment } from "react";
 import Modal from "react-bootstrap/Modal";
 import IStudent, { DefaultStudent } from "../../models/Student";
 import Button from "react-bootstrap/Button";
@@ -19,9 +19,10 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
 
   const createMode = studentId === -1;
 
-  const [name,setName] = useState("");
-  const [date,setDate] = useState("");
-  const [classTitle,setClass] = useState("");
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [classTitle, setClass] = useState("");
+  const [grades, setGrades] = useState(["0", "0", "0", "0"]);
 
   useEffect(() => {
     if (studentId && studentId != -1) {
@@ -35,8 +36,8 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
     setStudent(data);
     setName(data.Name);
     setDate(data.DateOfBirth.split("T")[0]);
-    setClass(data.Class.Name)
-    console.log(data)
+    setClass(data.Class.Name);
+    console.log(data);
   };
 
   const close = () => {
@@ -46,9 +47,9 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
   const save = async () => {};
 
   const deleteMe = async () => {
-      const res = await fetch("/api/student/"+studentId,{method: "DELETE"});
-      const json = await res.json();
-      close();
+    const res = await fetch("/api/student/" + studentId, { method: "DELETE" });
+    const json = await res.json();
+    close();
   };
 
   return (
@@ -60,44 +61,93 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
       </Modal.Header>
       <Modal.Body>
         <Jumbotron className="d-flex justify-content-center align-items-center">
-            <div className="bg-white d-flex justify-content-center align-items-center" style={{borderRadius:"50%",height:"100px",width:"100px"}}>
-                <FontAwesomeIcon icon={faUser} size={"4x"}/>
-            </div>
+          <div
+            className="bg-white d-flex justify-content-center align-items-center"
+            style={{ borderRadius: "50%", height: "100px", width: "100px" }}
+          >
+            <FontAwesomeIcon icon={faUser} size={"4x"} />
+          </div>
         </Jumbotron>
         <Form>
-            <FormGroup>
-                <div className="row">
-                    <div className="col-4 col-form-label"><label>Naam</label></div>
-                    <div className="col-8">
-                        <input className="form-control" value={name} onChange={e=>setName(e.target.value)} />
-                    </div>
-                </div>
-            </FormGroup>
-            <FormGroup>
-                <div className="row">
-                    <div className="col-4 col-form-label"><label>Geboortedatum</label></div>
-                    <div className="col-8">
-                        <input type="date" className="form-control" value={date} onChange={e=>setDate(e.target.value)} />
-                    </div>
-                </div>
-            </FormGroup>
-            <FormGroup>
-                <div className="row">
-                    <div className="col-4 col-form-label"><label>Klas</label></div>
-                    <div className="col-8">
-                        <input className="form-control" value={classTitle} onChange={e=>setClass(e.target.value)} />
-                    </div>
-                </div>
-            </FormGroup>
+          <FormGroup>
+            <div className="row">
+              <div className="col-4 col-form-label">
+                <label>Naam</label>
+              </div>
+              <div className="col-8">
+                <input
+                  className="form-control"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </div>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <div className="row">
+              <div className="col-4 col-form-label">
+                <label>Geboortedatum</label>
+              </div>
+              <div className="col-8">
+                <input
+                  type="date"
+                  className="form-control"
+                  value={date}
+                  onChange={e => setDate(e.target.value)}
+                />
+              </div>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <div className="row">
+              <div className="col-4 col-form-label">
+                <label>Klas</label>
+              </div>
+              <div className="col-8">
+                <input
+                  className="form-control"
+                  value={classTitle}
+                  onChange={e => setClass(e.target.value)}
+                />
+              </div>
+            </div>
+          </FormGroup>
+          <h4>Cijfers</h4>
+          <FormGroup>
+            <div className="row">
+              {[1, 2, 3, 4].map(n => (
+                <Fragment key={n}>
+                  <div className="col-3 my-2 col-form-label">
+                    <label>Periode {n}</label>
+                  </div>
+                  <div className="col-3 my-2">
+                    <input
+                      type="number"
+                      className="form-control"
+                      value={grades[n - 1]}
+                      onChange={e => {
+                        const newGrades = [...grades];
+                        newGrades[n - 1] = e.target.value;
+                        setGrades(newGrades);
+                      }}
+                      style={{ width: "80px" }}
+                    />
+                  </div>
+                </Fragment>
+              ))}
+            </div>
+          </FormGroup>
         </Form>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
         <Button variant="secondary" onClick={close}>
           Annuleren
         </Button>
-        {!createMode && <Button variant="danger" onClick={deleteMe}>
-          Verwijderen
-        </Button>}
+        {!createMode && (
+          <Button variant="danger" onClick={deleteMe}>
+            Verwijderen
+          </Button>
+        )}
 
         <Button variant="primary" onClick={save}>
           Opslaan

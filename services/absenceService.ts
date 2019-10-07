@@ -4,7 +4,7 @@ import { RowDataPacket, OkPacket } from "mysql";
 export async function getAbsences() {
   const con = await getConnection();
   const [results] = await con.query<RowDataPacket[]>(`
-        select Absences.Id as AbsenceId, Date, Class, Reason, Type,
+        select Absences.Id as Id, Date, Class, Reason, Type, StudentId,
         Name as StudentName
         from Absences
         left join Students on Absences.StudentId = Students.Id

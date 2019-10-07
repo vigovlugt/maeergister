@@ -9,12 +9,27 @@ export async function getStudents() {
     `select * from Students`,
     []
   );
+
   return results.map(result => ({
-    Id: result.Id,
-    Name: result.Name,
-    DateOfBirth: new Date(result.DateOfBirth)
+    DateOfBirth: new Date(result.DateOfBirth),
+    ...result
   }));
 }
+
+/*
+ type Student {
+    Id: ID
+    Name: String
+    DateOfBirth: Date
+    Adress: String
+    City: String
+    Grade1: Float
+    Grade2: Float
+    Grade3: Float
+    Grade4: Float
+    Class: Class
+  }
+*/
 
 export async function getStudent(id: number): Promise<any> {
   const con = await getConnection();
@@ -23,15 +38,29 @@ export async function getStudent(id: number): Promise<any> {
     [id]
   );
   const result = results[0];
-  console.log(results);
-  const student: IStudent = {
-    Id: result.Id,
-    Name: result.Name,
+
+  const student = {
     Class: await getClass(parseInt(result.ClassId)),
-    DateOfBirth: new Date(result.DateOfBirth)
+    DateOfBirth: new Date(result.DateOfBirth),
+    ...result
   };
 
   return student;
+}
+
+export async function getStudentsByClass(id: number) {
+  const con = await getConnection();
+  const [results] = await con.query<RowDataPacket[]>(
+    `select * from Students where ClassId = ?;`,
+    [id]
+  );
+
+  const students = results.map(result => ({
+    DateOfBirth: new Date(result.DateOfBirth),
+    ...result
+  }));
+
+  return students;
 }
 
 export async function deleteStudent(id: number) {

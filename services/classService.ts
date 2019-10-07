@@ -10,19 +10,14 @@ export async function getClasses() {
   return results;
 }
 
-export async function getClass(id:number):Promise<IClass> {
-    const con = await getConnection();
+export async function getClass(id: number): Promise<any> {
+  const con = await getConnection();
   const [results] = await con.query<RowDataPacket[]>(
     "select * from Classes where Id = ?",
     [id]
   );
 
-const classObj:IClass = {
-    Id: results[0].Id,
-    Name: results[0].Name
-}
-
-  return classObj;
+  return results[0];
 }
 
 export async function getClassInfo(id: number) {

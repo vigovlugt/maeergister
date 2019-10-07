@@ -6,7 +6,9 @@ import AccountType from "../models/AccountType";
 import Layout from "../components/Layout/Layout";
 import { withRouter } from "next/router";
 import Head from "next/head";
-
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+import fetch from "node-fetch";
 import "../styles/custom.scss";
 
 interface IProps {
@@ -16,6 +18,11 @@ interface IProps {
 interface IState {
   accountType: AccountType;
 }
+
+const client = new ApolloClient({
+  uri: "http://localhost:3000/api/graphql",
+  fetch: fetch as any
+});
 
 class CustomApp extends App<IProps, {}, IState> {
   state = {
@@ -68,17 +75,19 @@ class CustomApp extends App<IProps, {}, IState> {
             content="initial-scale=1.0, width=device-width"
           />
         </Head>
-        <CustomAppContext.default.Provider value={{ accountType }}>
-          {useLayout ? (
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          ) : (
-            <div>
-              <Component {...pageProps} />
-            </div>
-          )}
-        </CustomAppContext.default.Provider>
+        <ApolloProvider client={client}>
+          <CustomAppContext.default.Provider value={{ accountType }}>
+            {useLayout ? (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            ) : (
+              <div>
+                <Component {...pageProps} />
+              </div>
+            )}
+          </CustomAppContext.default.Provider>
+        </ApolloProvider>
       </>
     );
   }

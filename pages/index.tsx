@@ -10,10 +10,12 @@ import "firebase/firestore";
 import { DayPickerRangeController } from "react-dates";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
 interface IProps {}
 
-const data = {
+const absentiesData = data => ({
   labels: [
     "Maandag",
     "Dinsdag",
@@ -27,14 +29,30 @@ const data = {
     {
       label: "My First dataset",
       backgroundColor: "#045286",
-      data: [65, 59, 80, 81, 56, 55, 40]
+      data: [data.absences.length]
     }
   ]
-};
+});
+
+const GET_HOMEDATA = gql`
+  {
+    students {
+      Grade1
+      Grade2
+      Grade3
+      Grade4
+    }
+    absences {
+      Date
+    }
+  }
+`;
 
 const Page: NextPage<IProps, {}> = () => {
   const [noteRef, setNoteRef] = useState();
   const [note, setNote] = useState("");
+
+  const { data, loading } = useQuery(GET_HOMEDATA);
 
   useEffect(() => {
     const firebaseConfig = {
@@ -78,7 +96,7 @@ const Page: NextPage<IProps, {}> = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Absentie</h5>
-              <Bar data={data} height={200}></Bar>
+              {!loading && <Bar data={absentiesData(data)} height={200}></Bar>}
             </div>
           </div>
         </div>
@@ -98,7 +116,7 @@ const Page: NextPage<IProps, {}> = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Cijfers</h5>
-              <Bar data={[1]}></Bar>
+              {!loading && <Bar data={absentiesData(data)}></Bar>}
             </div>
           </div>
         </div>

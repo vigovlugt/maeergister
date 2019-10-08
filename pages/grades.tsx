@@ -1,59 +1,87 @@
 import { NextPage } from "next";
-import { Radar } from "react-chartjs-2";
+import { Radar, Polar } from "react-chartjs-2";
+import { useMemo } from "react";
+import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 interface IProps {}
 
-const data = {
-  labels: [
-    "Vigo",
-    "Job",
-    "Krijn",
-    "Daan",
-    "Arnau"
-  ],
-  datasets: [
-    {
-      label: "P1",
-      backgroundColor: "rgba(255, 99, 132, 0.2)",
-      borderColor:"rgba(255, 99, 132)",
-      data: [2, 8.9, 10, 5, 7.8]
-    },
-{
-      label: "P2",
-      backgroundColor: "rgba(255, 159, 64, 0.2)",
-      borderColor:"rgba(255, 159, 64)",
-      data: [4, 5, 8, 3, 7]
-    },
-    {
-      label: "P3",
-      backgroundColor: "rgba(255, 205, 86, 0.2)",
-      borderColor:"rgba(255, 205, 86)",
-      data: [7, 8, 5, 9, 3]
-    },
-    {
-      label: "P4",
-      backgroundColor: "rgba(54, 162, 235, 0.2)",
-      borderColor:"rgba(54, 162, 235)",
-      data: [3, 1, 2, 5, 4]
-    },
-  ]
-};
+const colors = [
+  {
+    backgroundColor: "rgba(255, 99, 132, 0.2)",
+    borderColor: "rgba(255, 99, 132)"
+  },
+  {
+    backgroundColor: "rgba(255, 159, 64, 0.2)",
+    borderColor: "rgba(255, 159, 64)"
+  },
+  {
+    backgroundColor: "rgba(255, 205, 86, 0.2)",
+    borderColor: "rgba(255, 205, 86)"
+  },
+  {
+    backgroundColor: "rgba(54, 162, 235, 0.2)",
+    borderColor: "rgba(54, 162, 235)"
+  }
+];
+
+// {
+//   label: "P1",
+//   backgroundColor: "rgba(255, 99, 132, 0.2)",
+//   borderColor: "rgba(255, 99, 132)",
+//   data: [2, 8.9, 10, 5, 7.8]
+// }
+
+const radarDataFn = data => () => ({
+  labels: [data ? data.students.map(s => s["Name"]) : ""],
+  datasets: [0, 1, 2, 3].map((_, i) => ({
+    label: "P" + (i + 1),
+    ...colors[i],
+    data: [data ? data.students.map(s => s["Grade" + (i + 1)]) : null]
+  }))
+});
+
+const GRADES_QUERY = gql`
+  {
+    students {
+      Name
+      Grade1
+      Grade2
+      Grade3
+      Grade4
+    }
+  }
+`;
 
 const Page: NextPage<IProps, {}> = () => {
-    return <div>
-            <h1 className="mt-3">Cijfers</h1>
-            <div className="row">
-            <div className="col-sm">
+  const { data, loading } = useQuery(GRADES_QUERY);
+
+  const radarData = useMemo(radarDataFn(data), [data]);
+
+  return (
+    <div>
+      <h1 className="mt-3">Cijfers</h1>
+      <div className="row">
+        <div className="col-md-5">
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Cijfer per persoon</h5>
-              <Radar data={data} height={200}></Radar>
+              <Radar data={radarData} height={200}></Radar>
             </div>
           </div>
         </div>
+        <div className="col-md-2"></div>
+        <div className="col-md-5">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title text-center">Cijfer per persoon</h5>
+              <Polar data={radarData} height={200}></Polar>
             </div>
-
+          </div>
+        </div>
+      </div>
     </div>
-}
+  );
+};
 
 export default Page;

@@ -2,8 +2,10 @@ import { NextPage } from "next";
 import { Bar } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBirthdayCake } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useMemo } from "react";
+import isSameWeek from "date-fns/isSameWeek";
+import getDay from "date-fns/getDay";
+import differenceInDays from "date-fns/differenceInDays";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -12,24 +14,26 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import undefined from "firebase/firestore";
 
 interface IProps {}
 
-const absentiesData = data => ({
-  labels: [
-    "Maandag",
-    "Dinsdag",
-    "Woensdag",
-    "Donderdag",
-    "Vrijdag",
-    "Maandag",
-    "Dinsdag"
-  ],
+const today = new Date();
+
+const absentiesDataFn = data => () => ({
+  labels: ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"],
   datasets: [
     {
-      label: "My First dataset",
+      label: "Absenties per dag",
       backgroundColor: "#045286",
-      data: [data.absences.length]
+      data: [0, 1, 2, 3, 4].map((_, i) =>
+        data
+          ? data.absences.filter(a => {
+              const date = new Date(a.Date);
+              return getDay(date) == i + 1 && isSameWeek(date, today);
+            }).length
+          : []
+      )
     }
   ]
 });
@@ -41,6 +45,7 @@ const GET_HOMEDATA = gql`
       Grade2
       Grade3
       Grade4
+      DateOfBirth
     }
     absences {
       Date
@@ -53,6 +58,8 @@ const Page: NextPage<IProps, {}> = () => {
   const [note, setNote] = useState("");
 
   const { data, loading } = useQuery(GET_HOMEDATA);
+
+  const absentiesData = useMemo(absentiesDataFn(data), [data]);
 
   useEffect(() => {
     const firebaseConfig = {
@@ -89,6 +96,13 @@ const Page: NextPage<IProps, {}> = () => {
     }
   };
 
+  const birthDays = !loading
+    ? data.students.filter(s => {
+        const diffrence = differenceInDays(today, s.DateOfBirth) % 364.25;
+        return diffrence >= 0 && diffrence <= 7;
+      })
+    : [];
+
   return (
     <div>
       <div className="row mt-3">
@@ -96,7 +110,7 @@ const Page: NextPage<IProps, {}> = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Absentie</h5>
-              {!loading && <Bar data={absentiesData(data)} height={200}></Bar>}
+              {<Bar data={absentiesData} height={200}></Bar>}
             </div>
           </div>
         </div>
@@ -105,9 +119,18 @@ const Page: NextPage<IProps, {}> = () => {
             <div className="card-body">
               <h5 className="card-title text-center">Jarigen </h5>
               <ul className="list-group">
-                <li className="list-group-item">
-                  <FontAwesomeIcon icon={faBirthdayCake} /> - yes
-                </li>
+                {!loading &&
+                  (birthDays.length ? (
+                    birthDays.map(s => (
+                      <li className="list-group-item">
+                        <FontAwesomeIcon icon={faBirthdayCake} /> - {s.Name}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="list-group-item">
+                      Geen jarigen de komende 7 dagen
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
@@ -116,7 +139,7 @@ const Page: NextPage<IProps, {}> = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Cijfers</h5>
-              {!loading && <Bar data={absentiesData(data)}></Bar>}
+              {<Bar data={undefined}></Bar>}
             </div>
           </div>
         </div>

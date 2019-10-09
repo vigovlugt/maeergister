@@ -14,7 +14,7 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import undefined from "firebase/firestore";
+import "firebase/firestore";
 
 interface IProps {}
 
@@ -96,7 +96,7 @@ const Page: NextPage<IProps, {}> = () => {
     }
   };
 
-  const birthDays = !loading
+  const birthDays = data
     ? data.students.filter(s => {
         const diffrence = differenceInDays(today, s.DateOfBirth) % 364.25;
         return diffrence >= 0 && diffrence <= 7;

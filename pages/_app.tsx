@@ -18,9 +18,9 @@ interface IProps {
 interface IState {
   accountType: AccountType;
 }
-
+// console.log(window ? window.location: undefined)
 const client = new ApolloClient({
-  uri: "http://localhost:3000/api/graphql",
+  uri: "https://3000-e6a85cd1-d102-415e-aec7-2e29febf4dee.ws-eu0.gitpod.io/api/graphql",//"http://localhost:3000/api/graphql",
   fetch: fetch as any
 });
 

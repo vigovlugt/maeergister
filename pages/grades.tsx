@@ -25,20 +25,13 @@ const colors = [
   }
 ];
 
-// {
-//   label: "P1",
-//   backgroundColor: "rgba(255, 99, 132, 0.2)",
-//   borderColor: "rgba(255, 99, 132)",
-//   data: [2, 8.9, 10, 5, 7.8]
-// }
-
 const radarDataFn = data => () => ({
-  labels: [data ? data.students.map(s => s["Name"]) : ""],
   datasets: [0, 1, 2, 3].map((_, i) => ({
     label: "P" + (i + 1),
     ...colors[i],
-    data: [data ? data.students.map(s => s["Grade" + (i + 1)]) : null]
-  }))
+    data: data ? data.students.map(s => s["Grade" + (i + 1)]) : []
+  })),
+  labels: data ? data.students.map(s => s.Name) : []
 });
 
 const GRADES_QUERY = gql`
@@ -54,7 +47,7 @@ const GRADES_QUERY = gql`
 `;
 
 const Page: NextPage<IProps, {}> = () => {
-  const { data, loading } = useQuery(GRADES_QUERY);
+  const { data } = useQuery(GRADES_QUERY);
 
   const radarData = useMemo(radarDataFn(data), [data]);
 
@@ -62,7 +55,7 @@ const Page: NextPage<IProps, {}> = () => {
     <div>
       <h1 className="mt-3">Cijfers</h1>
       <div className="row">
-        <div className="col-md-5">
+        <div className="col-md-6">
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Cijfer per persoon</h5>
@@ -70,8 +63,7 @@ const Page: NextPage<IProps, {}> = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-2"></div>
-        <div className="col-md-5">
+        <div className="col-md-6">
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Cijfer per persoon</h5>

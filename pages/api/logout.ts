@@ -1,5 +1,3 @@
 import { NextApiResponse, NextApiRequest } from "next";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-
-}
+export default async (req: NextApiRequest, res: NextApiResponse) => {};

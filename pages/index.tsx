@@ -32,8 +32,24 @@ const absentiesDataFn = data => () => ({
               const date = new Date(a.Date);
               return getDay(date) == i + 1 && isSameWeek(date, today);
             }).length
-          : []
+          : 0
       )
+    }
+  ]
+});
+
+const gradesDataFn = (data: { students: any[] }) => () => ({
+  labels: ["P1", "P2", "P3", "P4"],
+  datasets: [
+    {
+      label: "Gemiddeld cijfer per periode",
+      backgroundColor: "#045286",
+      data: data
+        ? data.students
+            .map(s => [s.Grade1, s.Grade2, s.Grade3, s.Grade4])
+            .reduce((a, b) => a.map((n, i) => n + b[i]))
+            .map(n => n / data.students.length)
+        : []
     }
   ]
 });
@@ -60,7 +76,7 @@ const Page: NextPage<IProps, {}> = () => {
   const { data, loading } = useQuery(GET_HOMEDATA);
 
   const absentiesData = useMemo(absentiesDataFn(data), [data]);
-
+  const gradesData = useMemo(gradesDataFn(data), [data]);
   useEffect(() => {
     const firebaseConfig = {
       apiKey: "AIzaSyDg4dVmsZXjdnGq9szpNS3oVTyu0DFiZxg",
@@ -98,14 +114,15 @@ const Page: NextPage<IProps, {}> = () => {
 
   const birthDays = data
     ? data.students.filter(s => {
-        const diffrence = differenceInDays(today, s.DateOfBirth) % 364.25;
+        const diffrence =
+          differenceInDays(today, new Date(s.DateOfBirth)) % 364.25;
         return diffrence >= 0 && diffrence <= 7;
       })
     : [];
 
   return (
     <div>
-      <div className="row mt-3">
+      <div className="row mt-3" style={{ alignItems: "stretch" }}>
         <div className="col-sm">
           <div className="card">
             <div className="card-body">
@@ -115,7 +132,7 @@ const Page: NextPage<IProps, {}> = () => {
           </div>
         </div>
         <div className="col-sm">
-          <div className="card">
+          <div className="card h-100">
             <div className="card-body">
               <h5 className="card-title text-center">Jarigen </h5>
               <ul className="list-group">
@@ -136,17 +153,17 @@ const Page: NextPage<IProps, {}> = () => {
           </div>
         </div>
         <div className="col-sm">
-          <div className="card">
+          <div className="card h-100">
             <div className="card-body">
               <h5 className="card-title text-center">Cijfers</h5>
-              {<Bar data={undefined}></Bar>}
+              <Bar data={gradesData}></Bar>
             </div>
           </div>
         </div>
       </div>
       <div className="row mt-3">
         <div className="col-sm">
-          <div className="card" style={{ overflow: "hidden" }}>
+          <div className="card h-100" style={{ overflow: "hidden" }}>
             <div
               className="card-body bg-warning"
               style={{ borderBottom: "2px dotted black" }}

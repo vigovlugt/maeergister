@@ -67,7 +67,7 @@ export async function deleteStudent(id: number) {
   const con = await getConnection();
   const [packet] = await con.query<OkPacket>(
     "delete from Students where Id = ?;",
-    []
+    [id]
   );
   return packet.affectedRows > 0;
 }
@@ -75,8 +75,18 @@ export async function deleteStudent(id: number) {
 export async function createStudent(student: IStudent) {
   const con = await getConnection();
   const [packet] = await con.query<OkPacket>(
-    "insert into Students (Name,Class,DateOfBirth) VALUES (?,?,?)",
-    [student.Name, student.Class, student.DateOfBirth]
+    "insert into Students (Name,ClassId,DateOfBirth,Adress,City,Grade1,Grade2,Grade3,Grade4) VALUES (?,?,?,?,?,?,?,?,?)",
+    [
+      student.Name,
+      student.ClassId,
+      student.DateOfBirth,
+      student.Adress,
+      student.City,
+      student.Grade1,
+      student.Grade2,
+      student.Grade3,
+      student.Grade4
+    ]
   );
   return packet.affectedRows > 0;
 }
@@ -84,8 +94,18 @@ export async function createStudent(student: IStudent) {
 export async function updateStudent(student: IStudent) {
   const con = await getConnection();
   const [packet] = await con.query<OkPacket>(
-    "update Students set Name=?, Class=?, DateOfBirth=?",
-    [student.Name, student.Class, student.DateOfBirth]
+    "update Students set Name=?, DateOfBirth=?, Adress=?, City=?, Grade1=?, Grade2=?, Grade3=?, Grade4=? where Id=?",
+    [
+      student.Name,
+      student.DateOfBirth,
+      student.Adress,
+      student.City,
+      student.Grade1,
+      student.Grade2,
+      student.Grade3,
+      student.Grade4,
+      student.Id
+    ]
   );
   return packet.affectedRows > 0;
 }

@@ -43,7 +43,7 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
   const { accountType } = useContext(AppContext);
 
   return (
-    <div style={{backgroundColor:"rgba(0,0,0,0.1)"}}>
+    <div style={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
       <nav className="navbar navbar-light bg-primary">
         <div className="nav-content">
           <button className="btn btn-light" onClick={toggleSidebar}>
@@ -59,7 +59,7 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
             style={{
               height: "40px",
               width: "40px",
-              borderRadius: "50%",
+              borderRadius: "50%"
             }}
           >
             <FontAwesomeIcon
@@ -96,7 +96,9 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
             ))}
           </div>
         </div>
-        <div className={container ? "container" : ""}>{children}</div>
+        <div>
+          <div className={container ? "container" : ""}>{children}</div>
+        </div>
       </div>
     </div>
   );

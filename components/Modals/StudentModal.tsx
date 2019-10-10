@@ -22,6 +22,8 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [classTitle, setClass] = useState("");
+  const [adress, setAdress] = useState("");
+  const [city, setCity] = useState("");
   const [grades, setGrades] = useState(["0", "0", "0", "0"]);
 
   useEffect(() => {
@@ -35,8 +37,16 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
     const { data } = await res.json();
     setStudent(data);
     setName(data.Name);
-    setDate(data.DateOfBirth.split("T")[0]);
+    setDate(
+      data.DateOfBirth.split("T")[0]
+        .split("-")
+        .reverse()
+        .join("-")
+    );
     setClass(data.Class.Name);
+    setAdress(data.Adress);
+    setCity(data.City);
+    setGrades([data.Grade1, data.Grade2, data.Grade3, data.Grade4]);
     console.log(data);
   };
 
@@ -44,7 +54,33 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
     onHide();
   };
 
-  const save = async () => {};
+  const save = async () => {
+    console.log("Save");
+    const classId = window.location.href.split("/").slice(-1)[0];
+    const student = {
+      Name: name,
+      ClassId: parseInt(classId),
+      DateOfBirth: date,
+      Adress: adress,
+      City: city,
+      Id: studentId
+    };
+    grades.forEach((g, i) => (student["Grade" + (i + 1)] = parseFloat(g)));
+
+    if (createMode) {
+      const res = await fetch("/api/student/POST", {
+        method: "POST",
+        body: JSON.stringify(student)
+      });
+      close();
+    } else {
+      const res = await fetch("/api/student/" + studentId, {
+        method: "PUT",
+        body: JSON.stringify(student)
+      });
+      close();
+    }
+  };
 
   const deleteMe = async () => {
     const res = await fetch("/api/student/" + studentId, { method: "DELETE" });
@@ -108,6 +144,31 @@ const StudentModal: FC<IProps> = ({ show, onHide, studentId }) => {
                   className="form-control"
                   value={classTitle}
                   onChange={e => setClass(e.target.value)}
+                />
+              </div>
+            </div>
+          </FormGroup>
+          <h4>Woonplaats</h4>
+          <FormGroup>
+            <div className="row">
+              <div className="col-2 col-form-label">
+                <label>Adres</label>
+              </div>
+              <div className="col-4">
+                <input
+                  className="form-control"
+                  value={adress}
+                  onChange={e => setAdress(e.target.value)}
+                />
+              </div>
+              <div className="col-2 col-form-label">
+                <label>Stad</label>
+              </div>
+              <div className="col-4">
+                <input
+                  className="form-control"
+                  value={city}
+                  onChange={e => setCity(e.target.value)}
                 />
               </div>
             </div>

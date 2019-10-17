@@ -96,9 +96,7 @@ const Layout: FunctionComponent<IProps> = ({ children, container }) => {
             ))}
           </div>
         </div>
-        <div>
           <div className={container ? "container" : ""}>{children}</div>
-        </div>
       </div>
     </div>
   );

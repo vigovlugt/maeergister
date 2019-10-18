@@ -4,11 +4,11 @@ import { useState } from "react";
 import "./login.css";
 
 const Page: NextPage = () => {
-  let [externalId, setExternalId] = useState("");
+  let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
 
   const login = async () => {
-    const body = JSON.stringify({ externalId, password });
+    const body = JSON.stringify({ username, password });
     const response = await fetch(
       window.location.protocol + "//" + window.location.host + "/api/login",
       {
@@ -27,12 +27,12 @@ const Page: NextPage = () => {
   return (
     <div className="text-center login-div">
       <form style={{ width: "300px" }} onSubmit={e => e.preventDefault()}>
-        <h1 className="mb-3">Login</h1>
+        <h1 className="mb-3">Maeergister Login</h1>
         <input
           placeholder="Gebruikersnaam"
           className="form-control"
-          onChange={e => setExternalId(e.target.value)}
-          id="external-id"
+          onChange={e => setUsername(e.target.value)}
+          id="username"
         ></input>
         <input
           placeholder="Wachtwoord"

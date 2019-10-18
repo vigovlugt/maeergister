@@ -1,8 +1,9 @@
 import { NextPage } from "next";
-import { Radar, Polar } from "react-chartjs-2";
+import { Radar, Polar, Bar } from "react-chartjs-2";
 import { useMemo } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import { database } from "firebase";
 
 interface IProps {}
 
@@ -67,10 +68,36 @@ const Page: NextPage<IProps, {}> = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Cijfer per persoon</h5>
-              <Polar data={radarData} height={200}></Polar>
+              <Bar data={radarData} height={200}></Bar>
             </div>
           </div>
         </div>
+      </div>
+      <div className="row mt-3">
+        <table className="table bg-white mx-3">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Naam</th>
+              <th scope="col">Periode 1</th>
+              <th scope="col">Periode 2</th>
+              <th scope="col">Periode 3</th>
+              <th scope="col">Periode 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.students.map((s, i) => (
+              <tr key={i}>
+                <td>{i + 1}</td>
+                <td>{s.Name}</td>
+                <td>{s.Grade1}</td>
+                <td>{s.Grade2}</td>
+                <td>{s.Grade3}</td>
+                <td>{s.Grade4}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

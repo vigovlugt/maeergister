@@ -6,20 +6,19 @@ import { RowDataPacket } from "mysql";
 import cookie from "cookie";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { externalId, password } = JSON.parse(req.body);
+  const { username, password } = JSON.parse(req.body);
 
-  if (externalId && password) {
+  if (username && password) {
     const connection = await getConnection();
     const [results] = await connection.query<RowDataPacket[]>(
-      `select *, 'AccountType' as 'STUDENT' from Students where ExternalId = ? and Password = ?`,
-      [externalId, password]
+      `select * from Accounts where Username = ? and Password = ?`,
+      [username, password]
     );
     if (results.length > 0) {
       const account = results[0];
       const accessToken: IAccessToken = {
         accountType: account.AccountType,
-        id: account.Id,
-        externalId: account.externalId
+        id: account.Id
       };
 
       const jwtToken = jwt.sign(accessToken, "admin");

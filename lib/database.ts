@@ -5,9 +5,9 @@ let connection: mysql.Connection;
 export default async function getConnection() {
   if (connection) return connection;
   connection = await mysql.createConnection({
-    host: "maeergister.cobuwfghkcfg.eu-central-1.rds.amazonaws.com",
-    user: "admin",
-    password: "trwwUWVI3wJEu9ZlRcAL",
+    host: "<HOST>",
+    user: "<DATABASE USER>",
+    password: "<DATABASE PASSWORD>",
     database: "Maeergister",
     multipleStatements: true
   });
